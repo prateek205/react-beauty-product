@@ -1,0 +1,23 @@
+{
+  "users": [
+    {
+      "name": "rahul",
+      "email": "rahu@gmail.com",
+      "password": "12345678",
+      "id": "mkd4uxxo2dY"
+    },
+    {
+      "name": "c",
+      "email": "c@gmail.com",
+      "password": "12345678",
+      "id": "l9fcohm"
+    },
+    {
+      "name": "Prateek Bahad",
+      "email": "prateek@gmail.com",
+      "password": "Pra1234",
+      "id": "rkph-nJ"
+    }
+  ],
+  "products": []
+}
