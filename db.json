@@ -1,23 +1,27 @@
 {
   "users": [
     {
-      "name": "rahul",
-      "email": "rahu@gmail.com",
-      "password": "12345678",
-      "id": "mkd4uxxo2dY"
-    },
-    {
-      "name": "c",
-      "email": "c@gmail.com",
-      "password": "12345678",
-      "id": "l9fcohm"
-    },
-    {
-      "name": "Prateek Bahad",
+      "name": "Prateek_Bahad",
       "email": "prateek@gmail.com",
-      "password": "Pra1234",
-      "id": "rkph-nJ"
+      "password": "Pra@1234",
+      "id": "RkYPo-0ZNXA"
+    },
+    {
+      "name": "Tech_Surya",
+      "email": "Ts@gmail.com",
+      "password": "Ts@12345",
+      "id": "DCjjLrL9O7Q"
     }
   ],
-  "products": []
+  "products": [
+    {
+      "image": "/face-wash.webp",
+      "title": "Face-washGARNIER Bright Complete VITAMIN C , 150g (Pack of 2)|Brighter and Glowing Skin Face Wash (300 g)",
+      "desc": "N/A",
+      "price": "₹404",
+      "orgPrice": "₹698",
+      "discount": "42%",
+      "id": "-ow-hjJLnKM"
+    }
+  ]
 }

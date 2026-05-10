@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MyContext } from "../../context/UserContext";
+import { MyAuth } from "../../context/UserContextProvider";
 
 const My_Profile = () => {
-  const { user, handleLogout } = useContext(MyContext);
+  const { user, handleLogout } = MyAuth();
   const [image, setImage] = useState("");
 
   useEffect(() => {

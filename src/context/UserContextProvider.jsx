@@ -1,8 +1,10 @@
+import { createContext, useContext } from "react";
 import React, { useEffect, useState } from "react";
-import { MyContext } from "./UserContext";
 import { useNavigate } from "react-router-dom";
 
-const UserContextProvider = ({ children }) => {
+export const MyContext = createContext();
+
+export const UserContextProvider = ({ children }) => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [errors, setErrors] = useState({});
@@ -28,7 +30,7 @@ const UserContextProvider = ({ children }) => {
     e.preventDefault();
 
     const res = await fetch(
-      `http://localhost:3000/users?email=${email}&password=${pass}`,
+      `http://localhost:5000/users?email=${email}&password=${pass}`,
     );
     const users = await res.json();
 
@@ -75,7 +77,7 @@ const UserContextProvider = ({ children }) => {
       setErrors({});
     }, 2000);
 
-    const response = await fetch("http://localhost:3000/users", {
+    const response = await fetch("http://localhost:5000/users", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
@@ -124,4 +126,4 @@ const UserContextProvider = ({ children }) => {
   );
 };
 
-export default UserContextProvider;
+export const MyAuth = ()=>useContext(MyContext);

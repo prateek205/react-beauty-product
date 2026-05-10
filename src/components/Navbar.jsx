@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { MyContext } from "../context/UserContext";
+import { MyAuth } from "../context/UserContextProvider";
 
 const Navbar = () => {
-  const { user, handleLogout } = useContext(MyContext);
+  const { user, handleLogout } = MyAuth();
 
   return (
     <section className="flex items-center justify-around py-2 px-3 h-20 shadow-2xl shadow-red-700">

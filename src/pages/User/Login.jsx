@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { MyContext } from "../../context/UserContext";
+import { MyAuth } from "../../context/UserContextProvider";
 
 const Login = () => {
   const { login, setEmail, setPass, showPass, setShowPass } =
-    useContext(MyContext);
+    MyAuth()
 
   return (
     <section className="flex items-center justify-center h-screen bg-pink-200">
