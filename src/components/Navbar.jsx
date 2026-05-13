@@ -33,7 +33,7 @@ const Navbar = () => {
           <i className="fa-solid fa-search"></i>
         </li>
         <li className="capitalize hover:underline underline-offset-8 cursor-pointer ">
-          <Link to="/order">
+          <Link to="/cart">
             <i className="fa-solid fa-cart-shopping"></i>
           </Link>
         </li>

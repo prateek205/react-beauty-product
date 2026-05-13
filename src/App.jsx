@@ -11,7 +11,8 @@ import Register from "./pages/User/Register";
 import ProductDetails from "./pages/Product/ProductDetails";
 import ProtectedRoute from "./pages/User/ProtectedRoute";
 import My_Profile from "./pages/User/My_Profile";
-import AddProducts from "./pages/Product/AddProducts";
+// import AddProducts from "./pages/Product/AddProducts";
+import Cart from "./pages/Order/Cart";
 // import Dashboard from "./layout/Dashboard";
 // import AddProducts from "./pages/Product/AddProducts";
 
@@ -20,12 +21,13 @@ const App = () => {
     <>
       <Navbar />
       <Routes>
-        {/* <Route path="/" element={<Hero />} /> */}
+        <Route path="/" element={<Hero />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/product" element={<Products />} />
+        {/* <Route path="/product" element={<Products />} /> */}
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/order" element={<Order />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route
@@ -37,7 +39,7 @@ const App = () => {
           }
         />
       </Routes>
-      <AddProducts />
+      {/* <AddProducts /> */}
       <Footer />
     </>
   );

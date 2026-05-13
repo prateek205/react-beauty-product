@@ -3,8 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { MyAuth } from "../../context/UserContextProvider";
 
 const Login = () => {
-  const { login, setEmail, setPass, showPass, setShowPass } =
-    MyAuth()
+  const { login, setEmail, setPassword, showPass, setShowPass } = MyAuth();
 
   return (
     <section className="flex items-center justify-center h-screen bg-pink-200">
@@ -24,7 +23,7 @@ const Login = () => {
             type={showPass ? "password" : "text"}
             className="w-full py-1 px-2 outline-none rounded-md shadow-lg shadow-gray-500"
             placeholder="Password"
-            onChange={(e) => setPass(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <p
             onClick={() => setShowPass(!showPass)}

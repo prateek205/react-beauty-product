@@ -5,18 +5,18 @@ export const ProdContext = createContext();
 
 export const ProductContext = ({ children }) => {
   const initialValue = {
-    image: "",
-    title: "",
-    desc: "",
+    imageUrl: "",
+    name: "",
+    description: "",
     price: "",
-    orgPrice: "",
-    discount: "",
+    stock: "",
+    category: "",
   };
 
   const [form, setForm] = useState(initialValue);
 
   const { data, postData, updateData, deleteData } = useProduct(
-    "http://localhost:5000/products",
+    "https://e-commerce-backend-5q60.onrender.com/api/v1/user/products",
   );
 
   const handleChange = (e) => {

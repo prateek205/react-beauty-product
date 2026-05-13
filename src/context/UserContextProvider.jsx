@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, useContext } from "react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +7,7 @@ export const MyContext = createContext();
 
 export const UserContextProvider = ({ children }) => {
   const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
+  const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [showPass, setShowPass] = useState(true);
   const [formData, setFormData] = useState({
@@ -18,10 +19,16 @@ export const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const store = JSON.parse(localStorage.getItem("user"));
+    const store = localStorage.getItem("user");
 
     if (store) {
-      setUser(store);
+      try {
+        setUser(JSON.parse(store));
+      } catch (err) {
+        console.log("Invalid user in localStorage, removing...");
+        localStorage.removeItem("user");
+        setUser(null);
+      }
     }
   }, []);
 
@@ -29,17 +36,27 @@ export const UserContextProvider = ({ children }) => {
   const login = async (e) => {
     e.preventDefault();
 
-    const res = await fetch(
-      `http://localhost:5000/users?email=${email}&password=${pass}`,
-    );
-    const users = await res.json();
+    try {
+      const res = await axios.post(
+        "https://e-commerce-backend-5q60.onrender.com/api/v1/user/login",
+        {
+          email,
+          password,
+        },
+      );
 
-    if (users.length > 0) {
-      localStorage.setItem("user", JSON.stringify(users[0]));
-      setUser(users[0]);
+      const userData = res.data;
+      console.log("data", userData);
+
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      setUser(userData);
+
       navigate("/my_profile");
-    } else {
-      alert("User not found!");
+    } catch (error) {
+      console.log(error);
+
+      alert(error.response?.data?.message || "Login failed");
     }
   };
 
@@ -77,21 +94,22 @@ export const UserContextProvider = ({ children }) => {
       setErrors({});
     }, 2000);
 
-    const response = await fetch("http://localhost:5000/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const response = await axios.post(
+        "https://e-commerce-backend-5q60.onrender.com/api/v1/user/register",
+        formData,
+      );
 
-    const data = await response.json();
+      const data = response.data;
 
-    console.log("user added", data);
-
-    if (response.ok) {
+      console.log("user added", data);
       alert("Registration is Successfully");
+
+      setFormData({ name: "", email: "", password: "" });
+
       navigate("/login");
-    } else {
-      alert("Register failed!!");
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -110,11 +128,11 @@ export const UserContextProvider = ({ children }) => {
         setFormData,
         errors,
         setErrors,
-        login,
         email,
         setEmail,
-        pass,
-        setPass,
+        password,
+        setPassword,
+        login,
         showPass,
         setShowPass,
         user,
@@ -126,4 +144,4 @@ export const UserContextProvider = ({ children }) => {
   );
 };
 
-export const MyAuth = ()=>useContext(MyContext);
+export const MyAuth = () => useContext(MyContext);

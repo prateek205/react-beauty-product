@@ -1,15 +1,26 @@
 import { useParams } from "react-router-dom";
 import { databased } from "../../db.js";
+import { MyProduct } from "../../context/ProductContext.jsx";
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const products = databased[id];
+  const { data } = MyProduct();
+
+  const products = data.find((item) => item._id === id);
+
+  if (!products) {
+    return (
+      <div className="flex items-center justify-center h-screen font-bold text-2xl">
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <section className="h-screen bg-gray-300 flex items-start justify-center gap-2 py-2 px-3">
       <div className="w-1/2 h-full flex items-center justify-center p-5 bg-white">
         <img
-          src={products.image}
+          src={`https://e-commerce-backend-5q60.onrender.com${products.imageUrl}`}
           alt={products.name}
           className="w-full h-full object-cover p-5"
         />
@@ -18,20 +29,21 @@ const ProductDetails = () => {
         <h1 className="text-2xl font-bold">{products.name}</h1>
         <div className="flex items-center justify-start gap-5">
           <p className="text-gray-400 font-semi-bold text-xl line-through">
-            {products.originalPrice}/-
-          </p>
-          <p className="text-black text-2xl font-bold">{products.price}/-</p>
-          <p className="text-green-500 font-bold text-xl">
-            {products.discount} off
+            {products.price}/-
           </p>
         </div>
+        <p className="text-black text-2xl font-bold">
+          Category: <span className="font-normal">{products.category}</span>
+        </p>
         <div>
           <p className="text-black text-xl font-bold">
             Stock:
             <span
-              className={`text-xl font-bold ${products.inStock === "Out of Stock" ? "text-red-500" : products.inStock.toLowerCase().includes("only") ? "text-orange-500" : "text-green-500"}`}
+              className={`text-xl font-bold ${products.stock <= 0 ? "text-red-500" : products.stock <= 5 ? "text-orange-500" : "text-green-500"}`}
             >
-              {products.inStock}
+              {products.stock <= 0
+                ? "Out of Stock"
+                : `${products.stock} Available`}
             </span>
           </p>
         </div>
