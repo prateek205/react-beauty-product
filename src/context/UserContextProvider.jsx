@@ -52,7 +52,7 @@ export const UserContextProvider = ({ children }) => {
 
       setUser(userData);
 
-      navigate("/my_profile");
+      navigate("/");
     } catch (error) {
       console.log(error);
 

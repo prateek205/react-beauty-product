@@ -9,7 +9,6 @@ const useProduct = (url) => {
     try {
       const response = await axios.get(url);
       const data = response.data;
-      console.log("Data", data);
 
       setData(data.products);
     } catch (error) {

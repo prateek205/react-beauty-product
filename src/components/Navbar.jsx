@@ -1,64 +1,107 @@
-import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { MyAuth } from "../context/UserContextProvider";
+import { MyCart } from "../context/CartContext";
+import {
+  FaSearch,
+  FaShoppingBag,
+  FaUser,
+  FaSignOutAlt,
+  FaSignInAlt,
+} from "react-icons/fa";
 
 const Navbar = () => {
   const { user, handleLogout } = MyAuth();
+  const { cart } = MyCart();
 
   return (
-    <section className="flex items-center justify-around py-2 px-3 h-20 shadow-2xl shadow-red-700">
-      <h1 className="text-4xl font-bold font-cursive3">BloomSkin</h1>
-      <ul className="flex gap-5 font-cursive1 font-bold text-lg">
-        <li className="capitalize relative underline-animation cursor-pointer ">
-          <Link to="/">home</Link>
-        </li>
-        <li className="capitalize relative underline-animation cursor-pointer ">
-          <Link to="/product">product</Link>
-        </li>
-        <li className="capitalize relative underline-animation cursor-pointer ">
-          <Link to="/about">about</Link>
-        </li>
-        <li className="capitalize relative underline-animation cursor-pointer ">
-          <Link to="/contact">contact</Link>
-        </li>
-      </ul>
+    <nav className="sticky top-0 z-50 w-full bg-white/80 dark:bg-gray-900/90 backdrop-blur-lg shadow-lg border-b border-gray-200 dark:border-gray-800">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+        {/* LOGO */}
+        <Link to="/">
+          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-pink-500 to-yellow-500 bg-clip-text text-transparent tracking-wide">
+            BloomSkin
+          </h1>
+        </Link>
 
-      <ul className="flex items-center gap-5">
-        <li className="capitalize p-1 rounded-xl flex justify-between items-center bg-gray-300 cursor-pointer ">
-          <input
-            type="text"
-            className="bg-gray-300 py-1 px-3 rounded-md outline-none"
-            placeholder="Search"
-          />
-          <i className="fa-solid fa-search"></i>
-        </li>
-        <li className="capitalize hover:underline underline-offset-8 cursor-pointer ">
-          <Link to="/cart">
-            <i className="fa-solid fa-cart-shopping"></i>
+        {/* MENU */}
+        <ul className="hidden md:flex items-center gap-8 font-semibold text-gray-700 dark:text-gray-200">
+          {["/", "/product", "/about", "/contact"].map((path, index) => {
+            const labels = ["Home", "Product", "About", "Contact"];
+
+            return (
+              <li key={index}>
+                <NavLink
+                  to={path}
+                  className={({ isActive }) =>
+                    `relative transition duration-300 hover:text-pink-500 ${
+                      isActive ? "text-pink-500" : ""
+                    }`
+                  }
+                >
+                  {labels[index]}
+
+                  <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-pink-500 transition-all duration-300 hover:w-full"></span>
+                </NavLink>
+              </li>
+            );
+          })}
+        </ul>
+
+        {/* RIGHT SECTION */}
+        <div className="flex items-center gap-5">
+          {/* SEARCH */}
+          <div className="hidden lg:flex items-center bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-2 shadow-inner">
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="bg-transparent outline-none text-sm w-48 text-gray-700 dark:text-white placeholder:text-gray-400"
+            />
+
+            <FaSearch className="text-pink-500 cursor-pointer" />
+          </div>
+
+          {/* CART */}
+          <Link
+            to="/cart"
+            className="relative p-3 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-pink-500 hover:text-white transition duration-300"
+          >
+            <FaShoppingBag className="text-xl" />
+
+            <span className="absolute -top-2 -right-2 flex items-center justify-center w-6 h-6 rounded-full bg-pink-500 text-white text-xs font-bold shadow-md">
+              {cart.length}
+            </span>
           </Link>
-        </li>
-        {!user ? (
-          <li className="capitalize hover:underline underline-offset-8 cursor-pointer ">
-            <Link to="/login">
-              <i className="fa-solid fa-right-to-bracket"></i>
+
+          {/* LOGIN / PROFILE */}
+          {!user ? (
+            <Link
+              to="/login"
+              className="p-3 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-yellow-500 hover:text-white transition duration-300"
+            >
+              <FaSignInAlt className="text-xl" />
             </Link>
-          </li>
-        ) : (
-          <>
-            <li onClick={handleLogout}>
-              <Link to="/logout">
-                <i className="fa-solid fa-right-from-bracket"></i>
+          ) : (
+            <div className="flex items-center gap-3">
+              {/* PROFILE */}
+              <Link
+                to="/my_profile"
+                className="p-3 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-pink-500 hover:text-white transition duration-300"
+              >
+                <FaUser className="text-xl" />
               </Link>
-            </li>
-            <li>
-              <Link to="/my_profile">
-                <i className="fa-solid fa-user"></i>
-              </Link>
-            </li>
-          </>
-        )}
-      </ul>
-    </section>
+
+              {/* LOGOUT */}
+              <button
+                onClick={handleLogout}
+                className="p-3 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-red-500 hover:text-white transition duration-300"
+              >
+                <FaSignOutAlt className="text-xl" />
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </nav>
   );
 };
 

@@ -1,12 +1,17 @@
 import { useParams } from "react-router-dom";
 import { databased } from "../../db.js";
 import { MyProduct } from "../../context/ProductContext.jsx";
+import { FaMinus, FaPlus } from "react-icons/fa";
+import { MyCart } from "../../context/CartContext.jsx";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const { data } = MyProduct();
 
+  const { handleCart, increaseQty, decreaseQty, cart, setCart } = MyCart();
+
   const products = data.find((item) => item._id === id);
+  const cartItem = cart.find((item) => item._id === products.id);
 
   if (!products) {
     return (
@@ -20,7 +25,7 @@ const ProductDetails = () => {
     <section className="h-screen bg-gray-300 flex items-start justify-center gap-2 py-2 px-3">
       <div className="w-1/2 h-full flex items-center justify-center p-5 bg-white">
         <img
-          src={`https://e-commerce-backend-5q60.onrender.com${products.imageUrl}`}
+          src={products.imageUrl}
           alt={products.name}
           className="w-full h-full object-cover p-5"
         />
@@ -28,9 +33,7 @@ const ProductDetails = () => {
       <div className="w-1/2 h-full bg-white flex flex-col gap-5 py-2 px-4">
         <h1 className="text-2xl font-bold">{products.name}</h1>
         <div className="flex items-center justify-start gap-5">
-          <p className="text-gray-400 font-semi-bold text-xl line-through">
-            {products.price}/-
-          </p>
+          <p className="text-black font-bold text-xl">{products.price}/-</p>
         </div>
         <p className="text-black text-2xl font-bold">
           Category: <span className="font-normal">{products.category}</span>
@@ -48,11 +51,32 @@ const ProductDetails = () => {
           </p>
         </div>
         <div className="flex gap-3">
-          <button className="hover:translate-y-0.5 duration-200 rounded-md py-1 px-3 text-lg font-bold bg-orange-500 hover:bg-orange-400 hover:text-white">
+          <button
+            onClick={() => handleCart(products)}
+            className="hover:translate-y-0.5 duration-200 rounded-md py-1 px-3 text-lg font-bold bg-orange-400 hover:bg-orange-300 hover:text-white"
+          >
             Add to Cart
           </button>
-          <button className="hover:translate-y-0.5 duration-200 rounded-md py-1 px-3 text-lg font-bold bg-yellow-400 hover:bg-yellow-400 hover:text-white">
+
+          <button className="hover:translate-y-0.5 duration-200 rounded-md py-1 px-3 text-lg font-bold bg-yellow-400 hover:bg-yellow-300 hover:text-white">
             Buy Now
+          </button>
+        </div>
+
+        <div className="flex items-center justify-between w-1/6 shadow-[0_0_5px_rgb(50,50,50)] py-3 px-2 rounded-md">
+          <button
+            className="hover:text-red-400 duration-300"
+            onClick={() => decreaseQty(products._id)}
+          >
+            <FaMinus />
+          </button>
+          <p className="w-full text-center text-xl">{products.quantity}</p>
+
+          <button
+            className="hover:text-green-400 duration-300"
+            onClick={() => increaseQty(products._id)}
+          >
+            <FaPlus />
           </button>
         </div>
       </div>

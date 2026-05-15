@@ -1,68 +1,59 @@
-// import axios from "axios";
-// import { useEffect, useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-// const useCart = (url) => {
-//   const [cart, setCart] = useState([]);
+const useCart = (url) => {
+  const [cart, setCart] = useState([]);
 
-//   // GET CART
+  //   ADD TO CART
 
-//   const fetchCartData = async () => {
-//     try {
-//       const res = await axios.get(url);
-//       const data = res.data;
+  const addToCart = async (product, userId) => {
+    console.log(product);
+    console.log(userId);
 
-//       setCart(data);
-//       console.log("Get Data:", data);
-//     } catch (error) {
-//       console.log("fetch error", error);
-//     }
-//   };
+    try {
+      const res = await axios.post(url, {
+        userId,
+        productId: product._id,
+        quantity: 1,
+      });
+      console.log(res.data.cart);
+      console.log("addtocart:", res.data);
 
-//   useEffect(() => {
-//     fetchCartData();
-//   }, [url]);
+      return res.data;
+    } catch (error) {
+      console.log(error);
 
-//   //   ADD TO CART
+      return null;
+    }
+  };
 
-//   const addToCart = async (product) => {
-//     try {
-//       const res = await axios.post(url, {
-//         ...product,
-//         quantity: 1,
-//       });
+  //   UPDATE CART ITEM
+  const updateCart = async (id, updateCartItem) => {
+    try {
+      const res = await axios.put(`${url}/${id}`, updateCartItem);
 
-//       setCart((prev) => [...prev, res.data]);
-//       console.log("addtocart:", res.data);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
+      setCart((prev) =>
+        prev.map((item) => (item._id === id ? res.data : item)),
+      );
+      // console.log("data update", res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-//   //   UPDATE CART ITEM
-//   const updateCart = async (id, updateCartItem) => {
-//     try {
-//       const res = await axios.put(`${url}/${id}`, updateCartItem);
+  //   DELETE CART DATA
+  const deleteCart = async (id) => {
+    try {
+      await axios.delete(`${url}/${id}`);
 
-//       setCart((prev) => prev.map((item) => (item.id === id ? res.data : item)));
-//       console.log("data update", res.data);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
+      setCart((prev) => prev.filter((item) => item._id !== id));
+      // console.log("data delete", res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-//   //   DELETE CART DATA
-//   const deleteCart = async (id) => {
-//     try {
-//       await axios.delete(`${url}/${id}`);
+  return { cart, setCart, addToCart, updateCart, deleteCart };
+};
 
-//       setCart((prev) => prev.filter((item) => item.id !== id));
-//       console.log("data delete", res.data);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-//   return { cart, setCart, addToCart, updateCart, deleteCart };
-// };
-
-// export default useCart;
+export default useCart;

@@ -1,79 +1,106 @@
-// import { createContext, useContext, useEffect } from "react";
-// import useCart from "../hooks/useCart";
+import { createContext, useContext, useEffect } from "react";
+import useCart from "../hooks/useCart";
+import { useNavigate } from "react-router-dom";
 
-// export const CartContext = createContext();
+export const CartContext = createContext();
 
-// export const CartContextProvider = ({ children }) => {
-//   const { cart, addToCart, updateCart, deleteCart } = useCart(
-//     "https://e-commerce-backend-5q60.onrender.com/api/v1/user/carts",
-//   );
+export const CartContextProvider = ({ children }) => {
+  const { cart, setCart, addToCart, updateCart, deleteCart } = useCart(
+    "https://e-commerce-backend-5q60.onrender.com/api/v1/user/cart/add/:id",
+  );
 
-//   // ADD TO LOCAL STORAGE
+  const navigate = useNavigate();
 
-//   const addTolocal = async () => {
-//     const savedCart = localStorage.getItem("cart");
+  // ADD TO LOCAL STORAGE
 
-//     return;
-//   };
+  const addTolocal = async () => {
+    const savedCart = localStorage.getItem("cart");
 
-//   useEffect(() => {
-//     localStorage.setItem("user", JSON.stringify(cart));
-//   }, [cart]);
+    return;
+  };
 
-//   //   HANDLE ADD-TO-CART
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
-//   const handleCart = (product) => {
-//     const itemExist = cart.find((item) => item.id === product.id);
+  //   HANDLE ADD-TO-CART
 
-//     if (itemExist) {
-//       const updateCart = cart.map((item) =>
-//         item.id === product.id ? { ...product, quantity: quantity + 1 } : item,
-//       );
-//       setCart(updateCart);
-//     } else {
-//       setCart([...cart, { ...product, quantity: 1 }]);
-//     }
-//   };
+  const handleCart = async (product) => {
+    const user = JSON.parse(localStorage.getItem("user"));
 
-//   //   INCREASE QTY
-//   const increaseQty = (id) => {
-//     const updateCart = cart.map((item) =>
-//       item.id === product.id ? { ...product, quantity: quantity + 1 } : item,
-//     );
-//     setCart(updateCart);
-//   };
+    if (!user) {
+      alert("Please Login First");
+      navigate("/login");
+      return;
+    }
 
-//   //   DECREASE QTY
-//   const decreaseQty = (id) => {
-//     const updateCart = cart.map((item) =>
-//       item.id === id && item.quantity > 1
-//         ? { ...item, quantity: item.quantity - 1 }
-//         : item,
-//     );
-//     setCart(updateCart);
-//   };
+    const itemExist = cart.find((item) => item.productId === product._id);
 
-//   //   REMOVE ITEM
-//   const removeItem = (id) => {
-//     const filterCart = cart.filter((item) => item.id !== id);
+    if (itemExist) {
+      const updateCart = cart.map((item) =>
+        item.productId === product._id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item,
+      );
+      setCart(updateCart);
+    } else {
+      const savedCart = await addToCart(product, user._id);
 
-//     setCart(filterCart);
-//   };
+      if (!savedCart) return;
 
-//   return (
-//     <CartContext.Provider
-//       value={{
-//         cart,
-//         handleCart,
-//         increaseQty,
-//         decreaseQty,
-//         removeItem,
-//         updateCart,
-//       }}
-//     >
-//       {children}
-//     </CartContext.Provider>
-//   );
-// };
+      setCart(savedCart.items);
+    }
+    navigate("/cart");
+  };
 
-// export const MyCart = () => useContext(CartContext);
+  //   INCREASE QTY
+  const increaseQty = (id) => {
+    const updateCart = cart.map((item) =>
+      item._id === id ? { ...item, quantity: item.quantity + 1 } : item,
+    );
+    setCart(updateCart);
+  };
+
+  //   DECREASE QTY
+  const decreaseQty = (id) => {
+    const updateCart = cart.map((item) =>
+      item._id === id && item.quantity > 1
+        ? { ...item, quantity: item.quantity - 1 }
+        : item,
+    );
+    setCart(updateCart);
+  };
+
+  //   REMOVE ITEM
+  const removeItem = (id) => {
+    const filterCart = cart.filter((item) => item._id !== id);
+
+    setCart(filterCart);
+  };
+
+  //   TOTAL PRICE
+
+  const totalPrice = cart.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0,
+  );
+
+  return (
+    <CartContext.Provider
+      value={{
+        cart,
+        setCart,
+        handleCart,
+        increaseQty,
+        decreaseQty,
+        removeItem,
+        updateCart,
+        totalPrice,
+      }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
+};
+
+export const MyCart = () => useContext(CartContext);
