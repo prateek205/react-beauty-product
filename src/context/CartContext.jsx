@@ -1,100 +1,76 @@
 import { createContext, useContext, useEffect } from "react";
+
 import useCart from "../hooks/useCart";
-import { useNavigate } from "react-router-dom";
+import { MyAuth } from "./UserContextProvider";
 
 export const CartContext = createContext();
 
 export const CartContextProvider = ({ children }) => {
-  const { cart, setCart, addToCart, updateCart, deleteCart } = useCart(
-    "https://e-commerce-backend-5q60.onrender.com/api/v1/user/cart/add/:id",
-  );
+  const { user } = MyAuth();
 
-  const navigate = useNavigate();
-
-  // ADD TO LOCAL STORAGE
-
-  const addTolocal = async () => {
-    const savedCart = localStorage.getItem("cart");
-
-    return;
-  };
-
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
-
-  //   HANDLE ADD-TO-CART
+  const { cart, setCart, fetchCart, addToCart, updateCart, removeCart } =
+    useCart();
 
   const handleCart = async (product) => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const existingProduct = cart.find(
+      (item) => item.productId._id === product._id,
+    );
 
-    if (!user) {
-      alert("Please Login First");
-      navigate("/login");
+    if (existingProduct) {
+      incQty(product._id);
+    } else {
+      await addToCart(product);
+    }
+  };
+
+  const incQty = async (productId) => {
+    const item = cart.find((item) => item.productId._id === productId);
+
+    if (!item) return;
+
+    const newQty = item.quantity + 1;
+
+    await updateCart(productId, newQty);
+  };
+
+  const decQty = async (productId) => {
+    const item = cart.find((item) => item.productId._id === productId);
+
+    if (!item) return;
+
+    if (item.quantity <= 1) {
+      await removeCart(productId);
       return;
     }
 
-    const itemExist = cart.find((item) => item.productId === product._id);
+    const newQty = item.quantity - 1;
 
-    if (itemExist) {
-      const updateCart = cart.map((item) =>
-        item.productId === product._id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item,
-      );
-      setCart(updateCart);
-    } else {
-      const savedCart = await addToCart(product, user._id);
-
-      if (!savedCart) return;
-
-      setCart(savedCart.items);
-    }
-    navigate("/cart");
+    await updateCart(productId, newQty);
   };
 
-  //   INCREASE QTY
-  const increaseQty = (id) => {
-    const updateCart = cart.map((item) =>
-      item._id === id ? { ...item, quantity: item.quantity + 1 } : item,
-    );
-    setCart(updateCart);
-  };
-
-  //   DECREASE QTY
-  const decreaseQty = (id) => {
-    const updateCart = cart.map((item) =>
-      item._id === id && item.quantity > 1
-        ? { ...item, quantity: item.quantity - 1 }
-        : item,
-    );
-    setCart(updateCart);
-  };
-
-  //   REMOVE ITEM
-  const removeItem = (id) => {
-    const filterCart = cart.filter((item) => item._id !== id);
-
-    setCart(filterCart);
-  };
-
-  //   TOTAL PRICE
-
+    // TOTAL PRICE
   const totalPrice = cart.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0,
+    (acc, item) =>
+      acc + item.productId.price * item.quantity,
+    0
   );
+
+  useEffect(() => {
+    if (user) {
+      fetchCart();
+    }
+  }, [user]);
 
   return (
     <CartContext.Provider
       value={{
         cart,
         setCart,
+        fetchCart,
         handleCart,
-        increaseQty,
-        decreaseQty,
-        removeItem,
-        updateCart,
+        incQty,
+        decQty,
+        removeCart,
         totalPrice,
       }}
     >

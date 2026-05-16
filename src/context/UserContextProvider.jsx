@@ -45,8 +45,9 @@ export const UserContextProvider = ({ children }) => {
         },
       );
 
+      console.log(res.data)
+
       const userData = res.data;
-      console.log("data", userData);
 
       localStorage.setItem("user", JSON.stringify(userData));
 

@@ -1,59 +1,108 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { MyAuth } from "../context/UserContextProvider";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const useCart = (url) => {
+export default function useCart() {
   const [cart, setCart] = useState([]);
 
-  //   ADD TO CART
+  const { user } = MyAuth();
 
-  const addToCart = async (product, userId) => {
-    console.log(product);
-    console.log(userId);
+  const navigate = useNavigate();
 
+  const BASE_URL =
+    "https://e-commerce-backend-5q60.onrender.com/api/v1/user/cart";
+
+  const fetchCart = async () => {
     try {
-      const res = await axios.post(url, {
-        userId,
+      console.log("USER:", user);
+
+      if (!user.id) {
+        setCart([]);
+        return;
+      }
+
+      const response = await axios.get(`${BASE_URL}/${user.id}`);
+
+      console.log("CART RESPONSE:", response.data);
+
+      setCart(response.data.items || []);
+    } catch (error) {
+      console.log("Fetch Cart Error:", error);
+      setCart([]);
+    }
+  };
+
+  const addToCart = async (product) => {
+    try {
+      if (!user) {
+        alert("Please Login First");
+        navigate("/login");
+        return;
+      }
+
+      const newProduct = {
+        userId: user.id,
         productId: product._id,
         quantity: 1,
-      });
-      console.log(res.data.cart);
-      console.log("addtocart:", res.data);
+      };
 
-      return res.data;
+      console.log("NEW PRODUCT:", newProduct);
+
+      await axios.post(`${BASE_URL}/add`, newProduct);
+
+      navigate("/cart");
+
+      fetchCart();
+      toast.success("Item Added To Cart...");
     } catch (error) {
-      console.log(error);
-
-      return null;
+      toast.error("Add To Cart Error:", error);
     }
   };
 
-  //   UPDATE CART ITEM
-  const updateCart = async (id, updateCartItem) => {
+  const updateCart = async (productId, quantity) => {
     try {
-      const res = await axios.put(`${url}/${id}`, updateCartItem);
+      await axios.put(`${BASE_URL}/update`, {
+        userId: user.id,
+        productId,
+        quantity,
+      });
 
       setCart((prev) =>
-        prev.map((item) => (item._id === id ? res.data : item)),
+        prev.map((item) =>
+          item.productId._id === productId ? { ...item, quantity } : item,
+        ),
       );
-      // console.log("data update", res.data);
     } catch (error) {
-      console.log(error);
+      console.log("Update Cart Error:", error);
     }
   };
 
-  //   DELETE CART DATA
-  const deleteCart = async (id) => {
+  const removeCart = async (productId) => {
     try {
-      await axios.delete(`${url}/${id}`);
+      await axios.delete(`${BASE_URL}/remove`, {
+        data: {
+          userId: user.id,
+          productId,
+        },
+      });
 
-      setCart((prev) => prev.filter((item) => item._id !== id));
-      // console.log("data delete", res.data);
+      setCart((prev) =>
+        prev.filter((item) => item.productId._id !== productId),
+      );
+      toast.success("Item Delete successfully....");
     } catch (error) {
-      console.log(error);
+      toast.error("Remove Cart Error:", error);
     }
   };
 
-  return { cart, setCart, addToCart, updateCart, deleteCart };
-};
-
-export default useCart;
+  return {
+    cart,
+    setCart,
+    fetchCart,
+    addToCart,
+    updateCart,
+    removeCart,
+  };
+}

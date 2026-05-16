@@ -11,6 +11,9 @@ import { MyAuth } from "../../context/UserContextProvider";
 
 const My_Profile = () => {
   const { user, handleLogout } = MyAuth();
+
+  console.log(user)
+
   const [image, setImage] = useState("");
 
   useEffect(() => {
