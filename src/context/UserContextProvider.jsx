@@ -2,6 +2,7 @@ import axios from "axios";
 import { createContext, useContext } from "react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const MyContext = createContext();
 
@@ -17,6 +18,8 @@ export const UserContextProvider = ({ children }) => {
   });
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+
+  const BASE_URL = "https://e-commerce-backend-5q60.onrender.com/api/v1/user";
 
   useEffect(() => {
     const store = localStorage.getItem("user");
@@ -37,15 +40,12 @@ export const UserContextProvider = ({ children }) => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(
-        "https://e-commerce-backend-5q60.onrender.com/api/v1/user/login",
-        {
-          email,
-          password,
-        },
-      );
+      const res = await axios.post(`${BASE_URL}/login`, {
+        email,
+        password,
+      });
 
-      console.log(res.data)
+      console.log(res.data);
 
       const userData = res.data;
 
@@ -54,10 +54,11 @@ export const UserContextProvider = ({ children }) => {
       setUser(userData);
 
       navigate("/");
+      toast.success("Login Successful...");
     } catch (error) {
       console.log(error);
 
-      alert(error.response?.data?.message || "Login failed");
+      toast.alert("Login failed");
     }
   };
 
@@ -96,21 +97,18 @@ export const UserContextProvider = ({ children }) => {
     }, 2000);
 
     try {
-      const response = await axios.post(
-        "https://e-commerce-backend-5q60.onrender.com/api/v1/user/register",
-        formData,
-      );
+      const response = await axios.post(`${BASE_URL}/register`, formData);
 
       const data = response.data;
 
       console.log("user added", data);
-      alert("Registration is Successfully");
 
       setFormData({ name: "", email: "", password: "" });
 
       navigate("/login");
+      toast.success("Registration is Successfully");
     } catch (error) {
-      console.log(error);
+      toast.alert("Register Failed");
     }
   };
 
@@ -118,6 +116,7 @@ export const UserContextProvider = ({ children }) => {
     localStorage.removeItem("user");
     setUser(null);
     navigate("/login");
+    toast.success("Logout Successful");
   };
 
   return (

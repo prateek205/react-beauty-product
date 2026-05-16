@@ -3,11 +3,13 @@ import { useState } from "react";
 import { MyAuth } from "../context/UserContextProvider";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { MyProduct } from "../context/ProductContext";
 
 export default function useCart() {
   const [cart, setCart] = useState([]);
 
   const { user } = MyAuth();
+  const { data } = MyProduct();
 
   const navigate = useNavigate();
 
@@ -34,17 +36,18 @@ export default function useCart() {
     }
   };
 
-  const addToCart = async (product) => {
+  const addToCart = async (data) => {
+    console.log("DATA:", data);
     try {
       if (!user) {
-        alert("Please Login First");
+        toast.warning("Please Login First");
         navigate("/login");
         return;
       }
 
       const newProduct = {
         userId: user.id,
-        productId: product._id,
+        productId: data._id,
         quantity: 1,
       };
 

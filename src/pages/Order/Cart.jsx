@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaMinus,
   FaPlus,
@@ -10,12 +10,14 @@ import {
 } from "react-icons/fa";
 import { MyCart } from "../../context/CartContext";
 import { MyAuth } from "../../context/UserContextProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Cart = () => {
   const { user } = MyAuth();
 
   const { cart, fetchCart, incQty, decQty, removeCart, totalPrice } = MyCart();
+  const navigate = useNavigate();
 
   return (
     <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-black via-gray-950 to-pink-950 py-10 px-5 md:px-10">
@@ -58,9 +60,9 @@ const Cart = () => {
           </p>
 
           <Link to="/">
-          <button className="mt-10 bg-gradient-to-r from-pink-500 to-purple-600 hover:scale-105 text-white px-8 py-4 rounded-2xl text-lg font-bold transition duration-300 shadow-[0_10px_30px_rgba(236,72,153,0.4)]">
-            Continue Shopping
-          </button>
+            <button className="mt-10 bg-gradient-to-r from-pink-500 to-purple-600 hover:scale-105 text-white px-8 py-4 rounded-2xl text-lg font-bold transition duration-300 shadow-[0_10px_30px_rgba(236,72,153,0.4)]">
+              Continue Shopping
+            </button>
           </Link>
         </div>
       ) : (
@@ -202,12 +204,13 @@ const Cart = () => {
             </div>
 
             {/* CHECKOUT BUTTON */}
-            <Link to="/order">
-            <button className="group mt-10 w-full flex items-center justify-center gap-3 bg-gradient-to-r from-pink-500 to-purple-600 hover:scale-[1.02] text-white py-5 rounded-2xl text-xl font-bold shadow-[0_10px_30px_rgba(236,72,153,0.4)] transition duration-300">
+            <button
+              onClick={()=>navigate("/order")}
+              className="group mt-10 w-full flex items-center justify-center gap-3 bg-gradient-to-r from-pink-500 to-purple-600 hover:scale-[1.02] text-white py-5 rounded-2xl text-xl font-bold shadow-[0_10px_30px_rgba(236,72,153,0.4)] transition duration-300"
+            >
               Proceed to Checkout
               <FaArrowRight className="group-hover:translate-x-1 transition duration-300" />
             </button>
-            </Link>
           </div>
         </div>
       )}

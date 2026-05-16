@@ -17,7 +17,7 @@ import { ToastContainer } from "react-toastify";
 const App = () => {
   return (
     <>
-      <ToastContainer position="top-center" autoClose={500} theme="dark" />
+      <ToastContainer position="top-center" autoClose={1500} theme="dark" />
       <Navbar />
       <Routes>
         <Route path="/" element={<Hero />} />
