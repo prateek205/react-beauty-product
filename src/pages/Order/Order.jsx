@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { FaMapMarkerAlt, FaShoppingBag } from "react-icons/fa";
+import {
+  FaMapMarkerAlt,
+  FaShoppingBag,
+  FaTruck,
+  FaShieldAlt,
+  FaCreditCard,
+  FaArrowRight,
+} from "react-icons/fa";
+
 import { MyAuth } from "../../context/UserContextProvider";
 import { MyCart } from "../../context/CartContext";
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -18,7 +27,7 @@ const Order = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user.id) {
+    if (user?.id) {
       fetchCart();
     }
   }, [user]);
@@ -36,109 +45,226 @@ const Order = () => {
         shippingAddress,
       });
 
-      const data = res.data;
-      console.log("ORDER:", data);
+      console.log("ORDER:", res.data);
+
+      toast.success("Order Placed Successfully ✨");
+
       navigate("/");
-      toast.success("Order Place Successfully");
     } catch (error) {
-      toast.error("Order Place Failed");
+      toast.error("Order Failed ❌");
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 py-10 px-4">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Shipping Address */}
-        <div className="lg:col-span-2 bg-white rounded-3xl shadow-2xl p-8">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="bg-pink-100 p-4 rounded-full">
-              <FaMapMarkerAlt className="text-pink-500 text-3xl" />
+    <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-black via-gray-950 to-pink-950 py-10 px-5 md:px-10">
+      {/* BACKGROUND GLOW */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl"></div>
+
+      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-purple-500/20 rounded-full blur-3xl"></div>
+
+      {/* HEADER */}
+      <div className="relative z-10 mb-14">
+        <span className="uppercase tracking-[5px] text-pink-400 font-semibold">
+          Checkout Process
+        </span>
+
+        <h1 className="text-5xl md:text-6xl font-extrabold text-white mt-5">
+          Complete Your Order
+        </h1>
+
+        <p className="text-gray-400 text-lg mt-5 max-w-2xl">
+          Securely complete your purchase and get your premium skincare products
+          delivered to your doorstep.
+        </p>
+      </div>
+
+      {/* MAIN GRID */}
+      <div className="relative z-10 grid lg:grid-cols-[1fr_420px] gap-10">
+        {/* SHIPPING SECTION */}
+        <div className="bg-white/10 backdrop-blur-2xl border border-white/10 rounded-[40px] p-8 md:p-12 shadow-[0_10px_40px_rgba(0,0,0,0.4)]">
+          {/* TOP */}
+          <div className="flex items-center gap-5 mb-10">
+            <div className="bg-pink-500/20 p-5 rounded-3xl">
+              <FaMapMarkerAlt className="text-pink-400 text-4xl" />
             </div>
 
             <div>
-              <h1 className="text-4xl font-bold text-gray-800">
+              <h2 className="text-4xl font-bold text-white">
                 Shipping Address
-              </h1>
-              <p className="text-gray-500 mt-1">
-                Enter your complete delivery address
+              </h2>
+
+              <p className="text-gray-400 mt-2">
+                Enter your delivery details carefully
               </p>
             </div>
           </div>
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <textarea
-              rows="10"
-              placeholder="Enter your shipping address..."
-              className="w-full border border-gray-300 rounded-3xl px-6 py-5 text-lg outline-none resize-none focus:ring-2 focus:ring-pink-400 transition"
-              name="shippingAddress"
-              value={shippingAddress}
-              onChange={handleChange}
-            ></textarea>
+          {/* FORM */}
+          <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+            {/* USER DETAILS */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label className="text-gray-300 block mb-3">Full Name</label>
+
+                <input
+                  type="text"
+                  value={user?.name}
+                  readOnly
+                  className="w-full bg-black/30 border border-white/10 rounded-2xl py-4 px-5 text-white outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="text-gray-300 block mb-3">
+                  Email Address
+                </label>
+
+                <input
+                  type="email"
+                  value={user?.email}
+                  readOnly
+                  className="w-full bg-black/30 border border-white/10 rounded-2xl py-4 px-5 text-white outline-none"
+                />
+              </div>
+            </div>
+
+            {/* ADDRESS */}
+            <div>
+              <label className="text-gray-300 block mb-3">
+                Shipping Address
+              </label>
+
+              <textarea
+                rows="8"
+                placeholder="Enter your shipping address..."
+                value={shippingAddress}
+                onChange={handleChange}
+                className="w-full bg-black/30 border border-white/10 rounded-3xl px-6 py-5 text-lg text-white placeholder:text-gray-500 outline-none resize-none focus:border-pink-500 transition duration-300"
+              ></textarea>
+            </div>
+
+            {/* FEATURES */}
+            <div className="grid sm:grid-cols-3 gap-5">
+              <div className="bg-black/30 border border-white/10 rounded-2xl p-5 text-center">
+                <FaTruck className="mx-auto text-3xl text-pink-400 mb-3" />
+
+                <p className="text-white font-semibold">Fast Delivery</p>
+              </div>
+
+              <div className="bg-black/30 border border-white/10 rounded-2xl p-5 text-center">
+                <FaShieldAlt className="mx-auto text-3xl text-yellow-400 mb-3" />
+
+                <p className="text-white font-semibold">Secure Checkout</p>
+              </div>
+
+              <div className="bg-black/30 border border-white/10 rounded-2xl p-5 text-center">
+                <FaCreditCard className="mx-auto text-3xl text-green-400 mb-3" />
+
+                <p className="text-white font-semibold">Safe Payment</p>
+              </div>
+            </div>
+
+            {/* BUTTON */}
             <button
               type="submit"
-              className="w-full mt-8 bg-gradient-to-r from-green-500 to-emerald-600 hover:scale-[1.02] transition-all duration-300 text-white py-4 rounded-2xl text-lg font-bold shadow-lg"
+              className="group mt-5 w-full flex items-center justify-center gap-3 bg-gradient-to-r from-pink-500 to-purple-600 hover:scale-[1.02] text-white py-5 rounded-2xl text-xl font-bold shadow-[0_10px_30px_rgba(236,72,153,0.4)] transition duration-300"
             >
               Place Order
+              <FaArrowRight className="group-hover:translate-x-1 transition duration-300" />
             </button>
           </form>
         </div>
 
-        {/* Order Summary */}
-        <div className="bg-white rounded-3xl shadow-2xl p-8 h-fit sticky top-10">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="bg-purple-100 p-4 rounded-full">
-              <FaShoppingBag className="text-purple-600 text-3xl" />
+        {/* ORDER SUMMARY */}
+        <div className="h-fit sticky top-10 bg-white/10 backdrop-blur-2xl border border-white/10 rounded-[40px] p-8 shadow-[0_10px_40px_rgba(0,0,0,0.4)]">
+          {/* TOP */}
+          <div className="flex items-center gap-5 mb-10">
+            <div className="bg-purple-500/20 p-5 rounded-3xl">
+              <FaShoppingBag className="text-purple-400 text-4xl" />
             </div>
 
             <div>
-              <h1 className="text-3xl font-bold text-gray-800">
-                Order Summary
-              </h1>
-              <p className="text-gray-500 text-sm">Your selected items</p>
+              <h2 className="text-3xl font-bold text-white">Order Summary</h2>
+
+              <p className="text-gray-400">Your selected products</p>
             </div>
           </div>
 
-          {/* Product List */}
-          <div className="space-y-5">
-            {cart.map((item) => {
-              return (
-                <div
-                  key={item.productId._id}
-                  className="flex justify-between items-center border-b pb-4"
-                >
-                  <div className="flex gap-4">
-                    <img
-                      src={item.productId.imageUrl}
-                      alt="product"
-                      className="w-20 h-20 rounded-2xl object-cover"
-                    />
+          {/* PRODUCT LIST */}
+          <div className="flex flex-col gap-6 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+            {cart.map((item) => (
+              <div
+                key={item.productId._id}
+                className="bg-black/30 border border-white/10 rounded-3xl p-4 flex gap-4"
+              >
+                {/* IMAGE */}
+                <div className="bg-white/5 rounded-2xl p-3">
+                  <img
+                    src={item.productId.imageUrl}
+                    alt={item.productId.name}
+                    className="w-24 h-24 object-contain"
+                  />
+                </div>
 
-                    <div>
-                      <h2 className="font-bold text-gray-800">
-                        {item.productId.name}
-                      </h2>
-                      <p className="text-sm text-gray-500">{item.quantity}</p>
-                    </div>
+                {/* DETAILS */}
+                <div className="flex flex-col justify-between flex-1">
+                  <div>
+                    <h3 className="text-white font-bold text-lg line-clamp-2">
+                      {item.productId.name}
+                    </h3>
+
+                    <p className="text-pink-400 text-sm mt-2">
+                      Quantity : {item.quantity}
+                    </p>
                   </div>
 
-                  <h2 className="font-bold text-lg text-gray-800">
-                    ₹{item.productId.price}
-                  </h2>
+                  <div className="flex items-center justify-between mt-4">
+                    <h2 className="text-2xl font-bold text-white">
+                      ₹{item.productId.price}
+                    </h2>
+
+                    <span className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-xs font-bold">
+                      In Stock
+                    </span>
+                  </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
 
-          {/* Price Summary */}
-          <div className="mt-8 space-y-4">
-            <div className="border-t pt-4 flex justify-between text-2xl font-bold text-gray-800">
-              <span>Total</span>
-              <span>₹{totalPrice}</span>
+          {/* PRICE SUMMARY */}
+          <div className="mt-10 flex flex-col gap-5">
+            <div className="flex items-center justify-between text-gray-300">
+              <p>Subtotal</p>
+
+              <p>₹{totalPrice}</p>
+            </div>
+
+            <div className="flex items-center justify-between text-gray-300">
+              <p>Shipping</p>
+
+              <p className="text-green-400 font-semibold">Free</p>
+            </div>
+
+            <div className="flex items-center justify-between text-gray-300">
+              <p>Tax</p>
+
+              <p>₹99</p>
+            </div>
+
+            <div className="h-[1px] bg-white/10"></div>
+
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-white">Total</h2>
+
+              <h2 className="text-4xl font-extrabold text-pink-400">
+                ₹{totalPrice + 99}
+              </h2>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
