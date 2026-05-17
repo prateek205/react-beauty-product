@@ -12,8 +12,8 @@ import ProductDetails from "./pages/Product/ProductDetails";
 import ProtectedRoute from "./pages/User/ProtectedRoute";
 import My_Profile from "./pages/User/My_Profile";
 import Cart from "./pages/Order/Cart";
-import { ToastContainer } from "react-toastify";
 import OrderHistory from "./pages/Order/OrderHistory";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   return (
@@ -40,7 +40,6 @@ const App = () => {
           }
         />
       </Routes>
-      {/* <AddProducts /> */}
       <Footer />
     </>
   );

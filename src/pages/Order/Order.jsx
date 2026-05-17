@@ -47,6 +47,8 @@ const Order = () => {
 
       // console.log("ORDER:", res.data);
 
+      await fetchCart()
+
       toast.success("Order Placed Successfully ✨");
 
       navigate("/orderHistory");
