@@ -6,10 +6,13 @@ import {
   FaUser,
   FaSignOutAlt,
   FaCrown,
+  FaBoxOpen,
 } from "react-icons/fa";
 import { MyAuth } from "../../context/UserContextProvider";
+import { useNavigate } from "react-router-dom";
 
 const My_Profile = () => {
+  const navigate = useNavigate();
   const { user, handleLogout } = MyAuth();
 
   // console.log(user)
@@ -27,20 +30,6 @@ const My_Profile = () => {
       setImage("");
     }
   }, [user]);
-
-  const handleImage = (e) => {
-    const file = e.target.files[0];
-
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-
-    reader.onload = () => {
-      setImage(reader.result);
-      localStorage.setItem(`profileImage_${user.id}`, reader.result);
-    };
-  };
 
   return (
     <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-black via-gray-950 to-pink-950 flex items-center justify-center px-5 py-14">
@@ -76,12 +65,7 @@ const My_Profile = () => {
             <label className="absolute bottom-5 right-5 bg-pink-500 hover:bg-pink-400 text-white p-4 rounded-full cursor-pointer shadow-xl transition duration-300 hover:scale-110">
               <FaCamera className="text-xl" />
 
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImage}
-                className="hidden"
-              />
+              <input type="file" accept="image/*" className="hidden" />
             </label>
           </div>
 
@@ -161,13 +145,22 @@ const My_Profile = () => {
           </div>
 
           {/* BUTTON */}
-          <button
-            onClick={handleLogout}
-            className="mt-10 flex items-center justify-center gap-3 bg-gradient-to-r from-pink-500 to-red-500 hover:scale-[1.02] text-white py-4 rounded-2xl text-lg font-bold shadow-[0_10px_30px_rgba(236,72,153,0.4)] transition duration-300"
-          >
-            <FaSignOutAlt />
-            Logout Account
-          </button>
+          <div className="flex items-center justify-between gap-5 w-full">
+            <button
+              onClick={() => navigate("/orderHistory")}
+              className="w-1/2 mt-10 flex items-center justify-center gap-3 bg-gradient-to-r from-pink-500 to-red-500 hover:scale-[1.02] text-white py-4 rounded-2xl text-lg font-bold shadow-[0_10px_30px_rgba(236,72,153,0.4)] transition duration-300"
+            >
+              <FaBoxOpen />
+              Order History
+            </button>
+            <button
+              onClick={handleLogout}
+              className="w-1/2 mt-10 flex items-center justify-center gap-3 bg-gradient-to-r from-pink-500 to-red-500 hover:scale-[1.02] text-white py-4 rounded-2xl text-lg font-bold shadow-[0_10px_30px_rgba(236,72,153,0.4)] transition duration-300"
+            >
+              <FaSignOutAlt />
+              Logout Account
+            </button>
+          </div>
         </div>
       </div>
     </section>

@@ -49,7 +49,7 @@ const Order = () => {
 
       toast.success("Order Placed Successfully ✨");
 
-      navigate("/");
+      navigate("/orderHistory");
     } catch (error) {
       toast.error("Order Failed ❌");
     }
@@ -101,33 +101,6 @@ const Order = () => {
 
           {/* FORM */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-8">
-            {/* USER DETAILS */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label className="text-gray-300 block mb-3">Full Name</label>
-
-                <input
-                  type="text"
-                  value={user?.name}
-                  readOnly
-                  className="w-full bg-black/30 border border-white/10 rounded-2xl py-4 px-5 text-white outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="text-gray-300 block mb-3">
-                  Email Address
-                </label>
-
-                <input
-                  type="email"
-                  value={user?.email}
-                  readOnly
-                  className="w-full bg-black/30 border border-white/10 rounded-2xl py-4 px-5 text-white outline-none"
-                />
-              </div>
-            </div>
-
             {/* ADDRESS */}
             <div>
               <label className="text-gray-300 block mb-3">
