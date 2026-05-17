@@ -12,7 +12,7 @@ import { MyAuth } from "../../context/UserContextProvider";
 const My_Profile = () => {
   const { user, handleLogout } = MyAuth();
 
-  console.log(user)
+  // console.log(user)
 
   const [image, setImage] = useState("");
 
@@ -44,17 +44,14 @@ const My_Profile = () => {
 
   return (
     <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-black via-gray-950 to-pink-950 flex items-center justify-center px-5 py-14">
-      
       {/* BACKGROUND GLOW */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-yellow-400/10 rounded-full blur-3xl"></div>
 
       {/* MAIN CARD */}
       <div className="relative w-full max-w-6xl bg-white/10 backdrop-blur-xl border border-white/10 rounded-[40px] overflow-hidden shadow-[0_20px_80px_rgba(0,0,0,0.6)] grid lg:grid-cols-2">
-        
         {/* LEFT SIDE */}
         <div className="relative flex flex-col items-center justify-center bg-gradient-to-br from-pink-500/20 to-purple-500/10 p-10">
-          
           {/* PREMIUM BADGE */}
           <div className="absolute top-8 left-8 flex items-center gap-2 bg-yellow-400 text-black px-5 py-2 rounded-full font-bold shadow-lg">
             <FaCrown />
@@ -102,7 +99,6 @@ const My_Profile = () => {
 
         {/* RIGHT SIDE */}
         <div className="p-10 md:p-14 flex flex-col justify-between">
-          
           {/* HEADER */}
           <div>
             <span className="uppercase tracking-[5px] text-pink-400 font-semibold">
@@ -118,7 +114,6 @@ const My_Profile = () => {
 
           {/* INFO CARDS */}
           <div className="mt-12 flex flex-col gap-6">
-            
             {/* NAME */}
             <div className="flex items-center gap-5 bg-white/5 border border-white/10 rounded-3xl p-6 hover:bg-white/10 transition duration-300">
               <div className="bg-pink-500/20 text-pink-400 p-4 rounded-2xl">

@@ -18,7 +18,7 @@ export default function useCart() {
 
   const fetchCart = async () => {
     try {
-      console.log("USER:", user);
+      // console.log("USER:", user);
 
       if (!user.id) {
         setCart([]);
@@ -27,7 +27,7 @@ export default function useCart() {
 
       const response = await axios.get(`${BASE_URL}/${user.id}`);
 
-      console.log("CART RESPONSE:", response.data);
+      // console.log("CART RESPONSE:", response.data);
 
       setCart(response.data.items || []);
     } catch (error) {
@@ -37,7 +37,7 @@ export default function useCart() {
   };
 
   const addToCart = async (data) => {
-    console.log("DATA:", data);
+    // console.log("DATA:", data);
     try {
       if (!user) {
         toast.warning("Please Login First");
@@ -51,7 +51,7 @@ export default function useCart() {
         quantity: 1,
       };
 
-      console.log("NEW PRODUCT:", newProduct);
+      // console.log("NEW PRODUCT:", newProduct);
 
       await axios.post(`${BASE_URL}/add`, newProduct);
 
