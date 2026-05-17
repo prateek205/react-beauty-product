@@ -59,7 +59,7 @@ const Cart = () => {
             to glow naturally ✨
           </p>
 
-          <Link to="/">
+          <Link to="/product">
             <button className="mt-10 bg-gradient-to-r from-pink-500 to-purple-600 hover:scale-105 text-white px-8 py-4 rounded-2xl text-lg font-bold transition duration-300 shadow-[0_10px_30px_rgba(236,72,153,0.4)]">
               Continue Shopping
             </button>
@@ -205,7 +205,7 @@ const Cart = () => {
 
             {/* CHECKOUT BUTTON */}
             <button
-              onClick={()=>navigate("/order")}
+              onClick={() => navigate("/order")}
               className="group mt-10 w-full flex items-center justify-center gap-3 bg-gradient-to-r from-pink-500 to-purple-600 hover:scale-[1.02] text-white py-5 rounded-2xl text-xl font-bold shadow-[0_10px_30px_rgba(236,72,153,0.4)] transition duration-300"
             >
               Proceed to Checkout

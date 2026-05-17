@@ -19,16 +19,16 @@ const AllProducts = () => {
   const { handleCart } = MyCart();
 
   return (
-    <section className="h-full bg-gradient-to-br from-black via-gray-950 to-pink-950 py-10 px-5 md:px-10 overflow-scroll">
+    <section className="bg-gradient-to-br from-black via-gray-950 to-pink-950 py-10 px-5 md:px-10">
       {/* PRODUCT GRID */}
-      <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-10">
+      <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-5">
         {data.map((item) => (
           <div
             key={item._id}
             className="group relative bg-white/10 backdrop-blur-2xl border border-white/10 rounded-[35px] overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.4)] hover:-translate-y-2 transition duration-500"
           >
             {/* TOP ACTIONS */}
-            <div className="absolute top-5 right-5 z-20 flex flex-col gap-3">
+            <div className="absolute top-3 right-2 z-20 flex flex-col gap-3">
               {/* WISHLIST */}
               <button className="bg-black/40 hover:bg-pink-500 text-white p-3 rounded-full transition duration-300">
                 <FaHeart />
@@ -59,7 +59,7 @@ const AllProducts = () => {
               <img
                 src={item.imageUrl}
                 alt={item.name}
-                className="w-full h-72 object-contain group-hover:scale-110 transition duration-500"
+                className="w-full h-72 object-contain p-5 group-hover:scale-110 transition duration-500"
               />
             </div>
 
@@ -76,12 +76,6 @@ const AllProducts = () => {
                   {item.name}
                 </h2>
               </Link>
-
-              {/* DESCRIPTION */}
-              <p className="text-gray-400 leading-relaxed">
-                Premium skincare crafted with luxury ingredients for naturally
-                glowing and healthy skin.
-              </p>
 
               {/* RATING */}
               <div className="flex items-center gap-2">

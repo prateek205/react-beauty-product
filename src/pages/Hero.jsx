@@ -66,10 +66,10 @@ const Hero = () => {
             {/* BUTTONS */}
             <div className="flex flex-wrap gap-5 mt-5">
               <Link to="/product">
-              <button className="group flex items-center gap-3 bg-gradient-to-r from-pink-500 to-purple-600 hover:scale-105 text-white px-8 py-4 rounded-2xl text-lg font-bold shadow-[0_10px_30px_rgba(236,72,153,0.4)] transition duration-300">
-                Shop Now
-                <FaArrowRight className="group-hover:translate-x-1 transition duration-300" />
-              </button>
+                <button className="group flex items-center gap-3 bg-gradient-to-r from-pink-500 to-purple-600 hover:scale-105 text-white px-8 py-4 rounded-2xl text-lg font-bold shadow-[0_10px_30px_rgba(236,72,153,0.4)] transition duration-300">
+                  Shop Now
+                  <FaArrowRight className="group-hover:translate-x-1 transition duration-300" />
+                </button>
               </Link>
 
               <button className="border border-white/20 hover:bg-white hover:text-black text-white px-8 py-4 rounded-2xl text-lg font-bold transition duration-300">
@@ -122,8 +122,8 @@ const Hero = () => {
         </div>
 
         {/* PRODUCT GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-          {data.map((item) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+          {data.slice(0, 3).map((item) => (
             <div
               key={item._id}
               className="group relative bg-white/10 backdrop-blur-2xl border border-white/10 rounded-[35px] overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.4)] hover:-translate-y-2 transition duration-500"
@@ -138,7 +138,7 @@ const Hero = () => {
                 <img
                   src={item.imageUrl}
                   alt={item.name}
-                  className="w-full h-72 object-contain group-hover:scale-110 transition duration-500"
+                  className="w-full h-72 object-contain p-5 group-hover:scale-110 transition duration-500"
                 />
 
                 {/* STOCK */}
