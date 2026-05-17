@@ -13,6 +13,7 @@ import ProtectedRoute from "./pages/User/ProtectedRoute";
 import My_Profile from "./pages/User/My_Profile";
 import Cart from "./pages/Order/Cart";
 import { ToastContainer } from "react-toastify";
+import OrderHistory from "./pages/Order/OrderHistory";
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/orderHistory" element={<OrderHistory />} />
         <Route
           path="/my_profile"
           element={

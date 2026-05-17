@@ -45,7 +45,7 @@ const Order = () => {
         shippingAddress,
       });
 
-      console.log("ORDER:", res.data);
+      // console.log("ORDER:", res.data);
 
       toast.success("Order Placed Successfully ✨");
 
